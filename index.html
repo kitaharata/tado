@@ -98,7 +98,7 @@
               localStorage.setItem('b', JSON.stringify(this.b));
             }
             if (x === 1) {
-              this.a.c = this.b.a[y];
+              this.a.c = this.b.a[y].text;
             }
             if (x === 2 && this.a.c.trim() !== '') {
               this.b.a.splice(y, 1, { text: this.a.c });
