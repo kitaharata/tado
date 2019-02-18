@@ -51,7 +51,7 @@
                 disable-initial-sort
               >
                 <v-flex slot="item" slot-scope="i" xs12 sm6 md3>
-                  <v-card-text style="overflow: hidden" v-text="i.item"></v-card-text>
+                  <v-card-text style="overflow: hidden" v-text="i.item.text"></v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn icon @click="myApp(1, i.index)">
@@ -94,14 +94,14 @@
         methods: {
           myApp (x, y) {
             if (x === 0 && this.a.c.trim() !== '') {
-              this.b.a.push(this.a.c);
+              this.b.a.push({ text: this.a.c });
               localStorage.setItem('b', JSON.stringify(this.b));
             }
             if (x === 1) {
               this.a.c = this.b.a[y];
             }
             if (x === 2 && this.a.c.trim() !== '') {
-              this.b.a.splice(y, 1, this.a.c);
+              this.b.a.splice(y, 1, { text: this.a.c });
               localStorage.setItem('b', JSON.stringify(this.b));
             }
             if (x === 3) {
