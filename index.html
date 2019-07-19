@@ -9,8 +9,10 @@
     <meta property="og:title" content="TaDo" />
     <meta property="og:description" content="GitHub" />
     <meta property="og:site_name" content="TaDo | GitHub" />
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/1.5.1/vuetify.min.css" rel="stylesheet" />
+    <link href="manifest.json" rel="manifest" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.7.95/css/materialdesignicons.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/2.0.0-beta.3/vuetify.min.css" rel="stylesheet" />
     <style>[v-cloak] { display: none }</style>
   </head>
   <body>
@@ -22,7 +24,7 @@
               <span class="title">TaDo</span>
               <v-spacer></v-spacer>
               <v-text-field
-                append-icon="add"
+                append-icon="mdi-plus"
                 label="Text"
                 outline
                 single-line
@@ -34,7 +36,7 @@
             </v-card-title>
             <v-card-title>
               <v-text-field
-                append-icon="search"
+                append-icon="mdi-magnify"
                 label="Search"
                 single-line
                 hide-details
@@ -47,23 +49,22 @@
                 row wrap
                 :items="b.a"
                 :search="a.a"
-                :rows-per-page-items="a.b"
-                disable-initial-sort
+                order-by
               >
                 <v-flex slot="item" slot-scope="i" xs12 sm6 md3>
                   <v-card-text style="overflow: hidden" v-text="i.item.text"></v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn icon @click="myApp(1, i.index)">
-                      <v-icon>content_copy</v-icon>
+                      <v-icon>mdi-content-copy</v-icon>
                     </v-btn>
                     <v-btn icon @click="myApp(2, i.index)">
-                      <v-icon>edit</v-icon>
+                      <v-icon>mdi-pencil</v-icon>
                     </v-btn>
                     <v-btn icon @click="myApp(3, i.index)">
-                      <v-icon>delete</v-icon>
+                      <v-icon>mdi-delete</v-icon>
                     </v-btn>
-                  </v-card-text>
+                  </v-card-actions>
                 </v-flex>
               </v-data-iterator>
             </v-container>
@@ -71,49 +72,51 @@
         </v-content>
       </v-app>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.6/vue.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vuetify/1.5.1/vuetify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vuetify/2.0.0-beta.3/vuetify.min.js"></script>
     <script>
-      var vm = new Vue({
-        el: '#app',
-        data: {
-          a: {
-            a: '',
-            b: [20, 100, 400],
-            c: ''
-          },
-          b: {
-            a: []
-          }
-        },
-        mounted () {
-          if (localStorage.getItem('b') !== null) {
-            this.b = JSON.parse(localStorage.getItem('b'));
-          }
-        },
-        methods: {
-          myApp (x, y) {
-            if (x === 0 && this.a.c.trim() !== '') {
-              this.b.a.push({ text: this.a.c });
-              localStorage.setItem('b', JSON.stringify(this.b));
-            }
-            if (x === 1) {
-              this.a.c = this.b.a[y].text;
-            }
-            if (x === 2 && this.a.c.trim() !== '') {
-              this.b.a.splice(y, 1, { text: this.a.c });
-              localStorage.setItem('b', JSON.stringify(this.b));
-            }
-            if (x === 3) {
-              this.b.a.splice(y, 1);
-              localStorage.setItem('b', JSON.stringify(this.b));
-              if (this.b.a.length === 0) {
-                localStorage.removeItem('b');
-              }
-            }
-          }
+if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('sw.js'));
+let vuetify = new Vuetify();
+let vm = new Vue({
+  el: '#app', vuetify,
+  data: {
+    a: {
+      a: '',
+      b: [20, 100, 400],
+      c: ''
+    },
+    b: {
+      a: []
+    }
+  },
+  mounted() {
+    if (localStorage.getItem('b') !== null) {
+      this.b = JSON.parse(localStorage.getItem('b'));
+    }
+  },
+  methods: {
+    myApp(x, y) {
+      if (x === 0 && this.a.c.trim() !== '') {
+        this.b.a.push({ text: this.a.c });
+        localStorage.setItem('b', JSON.stringify(this.b));
+      }
+      if (x === 1) {
+        this.a.c = this.b.a[y].text;
+      }
+      if (x === 2 && this.a.c.trim() !== '') {
+        this.b.a.splice(y, 1, { text: this.a.c });
+        localStorage.setItem('b', JSON.stringify(this.b));
+      }
+      if (x === 3) {
+        this.b.a.splice(y, 1);
+        localStorage.setItem('b', JSON.stringify(this.b));
+        if (this.b.a.length === 0) {
+          localStorage.removeItem('b');
         }
-      });
+      }
+    }
+  }
+});
     </script>
   </body>
 </html>
