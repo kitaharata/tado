@@ -1,2 +1,2 @@
 # tado
-https://kitaharata.github.io/tado/
+https://kitaharata.github.io/tado
